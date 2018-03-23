@@ -4,6 +4,7 @@ const _ = require('lodash');
 const express = require('express');
 const bodyParser = require('body-parser');
 const {ObjectID} = require('mongodb');
+const cors = require('cors');
 
 const {mongoose} = require('./db/mongoose');
 const {Food} = require('./models/food');
@@ -12,6 +13,7 @@ const app = express();
 const port = process.env.PORT;
 
 app.use(bodyParser.json());
+app.use(cors());
 
 // GET /foods
 app.get('/foods', (req, res) => {
@@ -44,7 +46,9 @@ app.post('/foods', (req, res) => {
         name: req.body.name,
         carbs: req.body.carbs,
         prot: req.body.prot,
-        fat: req.body.fat
+        fat: req.body.fat,
+        servingSize: req.body.servingSize,
+        servingUnit: req.body.servingUnit
     });
 
     food.save().then((doc) => {
@@ -74,7 +78,7 @@ app.delete('/foods/:id', (req, res) => {
 app.patch('/foods/:id', (req, res) => {
     const id = req.params.id;
 
-    const body = _.pick(req.body, ['name', 'carbs', 'prot', 'fat']);
+    const body = _.pick(req.body, ['name', 'carbs', 'prot', 'fat', 'servingSize', 'servingUnit']);
 
     if (!ObjectID.isValid(id)) {
         return res.status(404).send();
