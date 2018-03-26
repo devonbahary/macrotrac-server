@@ -20,6 +20,17 @@ const Food = mongoose.model('Food', {
         type: Number,
         required: true,
         min: 0
+    },
+    servingSize: {
+        type: Number,
+        required: true,
+        min: 0.01
+    },
+    servingUnit: {
+        type: String,
+        required: true,
+        minlength: 1,
+        trim: true
     }
 });
 
